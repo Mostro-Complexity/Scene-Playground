@@ -27,13 +27,13 @@
     <ClInclude Include="texture.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Group.h">
+    <ClInclude Include="mostro\simulation\WindowGroup.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CameraGroup.h">
+    <ClInclude Include="mostro\simulation\CameraGroup.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="WindowGroup.h">
+    <ClInclude Include="mostro\simulation\Group.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

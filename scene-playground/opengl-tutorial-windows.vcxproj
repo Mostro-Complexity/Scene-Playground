@@ -150,13 +150,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CameraGroup.h" />
-    <ClInclude Include="Group.h" />
+    <ClInclude Include="mostro\simulation\CameraGroup.h" />
+    <ClInclude Include="mostro\simulation\Group.h" />
     <ClInclude Include="shader.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="texture.hpp" />
-    <ClInclude Include="WindowGroup.h" />
+    <ClInclude Include="mostro\simulation\WindowGroup.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
