@@ -53,9 +53,6 @@
     <None Include="TextureFragmentShader.fragmentshader">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="readme.md">
-      <Filter>资源文件</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="uvtemplate.DDS">
