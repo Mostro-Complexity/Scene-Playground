@@ -66,11 +66,11 @@ GLuint loadBMP_custom(const char * imagepath) {
 	fclose(file);
 
 	// Create one OpenGL texture
-	GLuint textureID;
-	glGenTextures(1, &textureID);
+	GLuint textureSamplerID;
+	glGenTextures(1, &textureSamplerID);
 
 	// "Bind" the newly created texture : all future texture functions will modify this texture
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	glBindTexture(GL_TEXTURE_2D, textureSamplerID);
 
 	// Give the image to OpenGL
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
@@ -91,7 +91,7 @@ GLuint loadBMP_custom(const char * imagepath) {
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	// Return the ID of the texture we just created
-	return textureID;
+	return textureSamplerID;
 }
 
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
@@ -157,11 +157,11 @@ GLuint loadDDS(const char * imagepath) {
 	}
 
 	// Create one OpenGL texture
-	GLuint textureID;
-	glGenTextures(1, &textureID);
+	GLuint textureSamplerID;
+	glGenTextures(1, &textureSamplerID);
 
 	// "Bind" the newly created texture : all future texture functions will modify this texture
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	glBindTexture(GL_TEXTURE_2D, textureSamplerID);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
@@ -186,7 +186,7 @@ GLuint loadDDS(const char * imagepath) {
 
 	free(buffer);
 
-	return textureID;
+	return textureSamplerID;
 
 
 }

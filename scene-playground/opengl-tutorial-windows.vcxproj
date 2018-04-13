@@ -152,6 +152,8 @@
   <ItemGroup>
     <ClInclude Include="mostro\simulation\CameraGroup.h" />
     <ClInclude Include="mostro\simulation\Group.h" />
+    <ClInclude Include="mostro\simulation\ShaderGroup.h" />
+    <ClInclude Include="mostro\simulation\TextureGroup.h" />
     <ClInclude Include="shader.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

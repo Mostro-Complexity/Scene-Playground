@@ -1,7 +1,5 @@
 #pragma once
-#include "stdafx.h"
 #include "Group.h"
-
 
 namespace mostro
 {
