@@ -12,7 +12,7 @@
 #include <sstream>
 #include <string.h>
 #include <memory>
-
+#include <unordered_map>
 // Include GLEW
 #include <GL/glew.h>
 

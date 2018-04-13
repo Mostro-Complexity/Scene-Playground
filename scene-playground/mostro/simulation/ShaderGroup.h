@@ -1,6 +1,6 @@
 #pragma once
 #include "Group.h"
-
+#include "TextureGroup.h"
 
 namespace mostro
 {
@@ -9,25 +9,46 @@ namespace mostro
 		class ShaderGroup : public Group
 		{
 		public:
-			GLuint programID, textureSamplerID;
+			GLuint programID;
+
+			// 一个着色器控制多个纹理采样器，纹理采样器ID，纹理-->采样器
+			std::unordered_map<GLuint, GLuint> textureSamplerMap;
+
+			std::vector<std::shared_ptr<TextureGroup>> textureList;
+
 			std::string vertexFilePath, fragmentFilePath;
 
 			ShaderGroup(const std::string &vertexFilePath, const std::string &fragmentFilePath)
 				: vertexFilePath(vertexFilePath), fragmentFilePath(fragmentFilePath) {}
 
-
 			void init() override
 			{
 				programID = LoadShaders(vertexFilePath, fragmentFilePath);
-				// Get a handle for our "myTextureSampler" uniform
-				textureSamplerID = glGetUniformLocation(programID, "myTextureSampler");
 			}
 
 			void render() override
 			{
-				// TODO: 弄懂什么意思
-				// Set our "myTextureSampler" sampler to use Texture Unit 0
-				glUniform1i(textureSamplerID, 0);
+				// 设置采样器
+				unsigned i = 0;
+				for (std::unordered_map<GLuint, GLuint>::iterator iter = textureSamplerMap.begin();
+					iter != textureSamplerMap.end(); iter++)
+				{
+					// Bind our texture in Texture Unit i
+					glActiveTexture(GL_TEXTURE0 + i);
+					glBindTexture(GL_TEXTURE_2D, iter->first);
+					// Get a handle for our "myTextureSampler" uniform
+					glUniform1i(iter->second, GLint(i));
+				}
+
+			}
+
+			void setTextureGroup(TextureGroup *textureGroup)
+			{
+				textureGroup->init();
+				std::string name = "TextureSampler";
+				textureSamplerMap[textureGroup->textureID] = glGetUniformLocation(programID,
+					std::to_string(textureList.size()).c_str());
+				textureList.push_back(std::shared_ptr<TextureGroup>(textureGroup));
 			}
 		private:
 			GLuint LoadShaders(const std::string &vertex_file_path, const std::string &fragment_file_path) {

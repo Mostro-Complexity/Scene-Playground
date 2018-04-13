@@ -46,7 +46,13 @@ namespace mostro
 				glDeleteBuffers(1, &vertexbuffer);
 				glDeleteBuffers(1, &uvbuffer);
 				glDeleteProgram(getShaderGroup()->programID);
-				glDeleteTextures(1, &shaderGroup->textureSamplerID);
+
+				for (std::unordered_map<GLuint, GLuint>::iterator iter = shaderGroup->textureSamplerMap.begin();
+					iter != shaderGroup->textureSamplerMap.end(); iter++)
+				{// É¾³ý²ÉÑùÆ÷
+					glDeleteTextures(1, &iter->second);
+				}
+
 				glDeleteVertexArrays(1, &VertexArrayID);
 
 				// Close OpenGL window and terminate GLFW
@@ -58,12 +64,7 @@ namespace mostro
 				renderList.push_back(std::shared_ptr<Group>(group));
 			}
 
-			void setTextureGroup(TextureGroup *textureGroup)
-			{
-				textureGroup->init();
-				this->textureGroup = std::shared_ptr<TextureGroup>(textureGroup);
-				renderList.push_back(this->textureGroup);
-			}
+
 
 			void setCameraGroup(CameraGroup *cameraGroup)
 			{

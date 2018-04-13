@@ -23,13 +23,7 @@ namespace mostro
 				textureID = loadDDS(fileName.c_str());
 			}
 
-			// 主窗体渲染
-			void render() override
-			{
-				// Bind our texture in Texture Unit 0
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, textureID);
-			}
+			void render() override {}
 		private:
 			//TODO: 寻找第三方库替代之
 			GLuint loadBMP_custom(const char * imagepath) {
