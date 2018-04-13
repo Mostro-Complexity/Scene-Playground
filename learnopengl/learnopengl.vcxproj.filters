@@ -21,19 +21,19 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="mostro\simulation\WindowGroup.h">
+    <ClInclude Include="learnopengl\shader.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="mostro\simulation\CameraGroup.h">
+    <ClInclude Include="learnopengl\camera.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="mostro\simulation\Group.h">
+    <ClInclude Include="learnopengl\mesh.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="mostro\simulation\ShaderGroup.h">
+    <ClInclude Include="learnopengl\model.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="mostro\simulation\TextureGroup.h">
+    <ClInclude Include="learnopengl\texture.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,19 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="TransformVertexShader.vertexshader">
+    <None Include="learnopengl\TextureFragmentShader.fragmentshader">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="TextureFragmentShader.fragmentshader">
+    <None Include="learnopengl\TransformVertexShader.vertexshader">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="readme.md">
-      <Filter>资源文件</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="uvtemplate.DDS">
-      <Filter>资源文件</Filter>
-    </Image>
   </ItemGroup>
 </Project>
