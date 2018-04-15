@@ -19,15 +19,15 @@ namespace mostro
 			std::string vertexFilePath, fragmentFilePath;
 
 			ShaderGroup(const std::string &vertexFilePath, const std::string &fragmentFilePath)
-				: vertexFilePath(vertexFilePath), fragmentFilePath(fragmentFilePath) {}
-
-			void init() override
+				: vertexFilePath(vertexFilePath), fragmentFilePath(fragmentFilePath)
 			{
 				programID = LoadShaders(vertexFilePath, fragmentFilePath);
 			}
 
 			void render() override
 			{
+				// Use our shader
+				glUseProgram(programID);
 				// 设置采样器
 				unsigned i = 0;
 				for (std::unordered_map<GLuint, GLuint>::iterator iter = textureSamplerMap.begin();
@@ -44,11 +44,19 @@ namespace mostro
 
 			void setTextureGroup(TextureGroup *textureGroup)
 			{
-				textureGroup->init();
 				std::string name = "TextureSampler";
 				textureSamplerMap[textureGroup->textureID] = glGetUniformLocation(programID,
 					std::to_string(textureList.size()).c_str());
 				textureList.push_back(std::shared_ptr<TextureGroup>(textureGroup));
+			}
+
+			void destroy()
+			{
+				for (std::unordered_map<GLuint, GLuint>::iterator iter = textureSamplerMap.begin();
+					iter != textureSamplerMap.end(); iter++)
+				{// 删除采样器
+					glDeleteTextures(1, &iter->second);
+				}
 			}
 		private:
 			GLuint LoadShaders(const std::string &vertex_file_path, const std::string &fragment_file_path) {

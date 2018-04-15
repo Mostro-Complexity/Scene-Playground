@@ -11,8 +11,6 @@ namespace mostro
 			CameraGroup(CameraGroupType cameraGroupType = CameraGroupType::roamCamera)
 				: cameraGroupType(cameraGroupType) {}
 
-			void init() override {}
-
 			void render() override
 			{
 				switch (cameraGroupType)

@@ -16,9 +16,7 @@ namespace mostro
 			std::string fileName;
 
 			TextureGroup(const std::string &filename)
-				: fileName(filename) {}
-
-			void init() override
+				: fileName(filename)
 			{
 				textureID = loadDDS(fileName.c_str());
 			}
@@ -26,7 +24,8 @@ namespace mostro
 			void render() override {}
 		private:
 			//TODO: 寻找第三方库替代之
-			GLuint loadBMP_custom(const char * imagepath) {
+			GLuint loadBMP_custom(const char * imagepath)
+			{
 				printf("Reading image %s\n", imagepath);
 
 				// Data read from the header of the BMP file

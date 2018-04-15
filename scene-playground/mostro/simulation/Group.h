@@ -36,7 +36,6 @@ namespace mostro
 		{
 		public:
 
-			virtual void init() abstract;
 			virtual void render() abstract;
 
 			virtual ~Group() {}

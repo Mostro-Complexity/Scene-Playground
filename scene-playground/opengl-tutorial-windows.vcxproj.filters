@@ -36,6 +36,9 @@
     <ClInclude Include="mostro\simulation\TextureGroup.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="mostro\simulation\ModelGroup.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
