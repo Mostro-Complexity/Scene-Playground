@@ -18,33 +18,36 @@
     <ClInclude Include="stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="targetver.h">
+    <ClInclude Include="mostro\utility\Group.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="mostro\simulation\WindowGroup.h">
+    <ClInclude Include="mostro\utility\CameraGroup.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="mostro\simulation\CameraGroup.h">
+    <ClInclude Include="mostro\utility\WindowGroup.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="mostro\simulation\Group.h">
+    <ClInclude Include="mostro\modeling\Mesh.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="mostro\simulation\ShaderGroup.h">
+    <ClInclude Include="mostro\modeling\Shader.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="mostro\simulation\TextureGroup.h">
+    <ClInclude Include="mostro\modeling\Batch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="mostro\simulation\ModelGroup.h">
+    <ClInclude Include="mostro\utility\ModelGroup.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="Main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="mostro\modeling\Mesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mostro\utility\ModelGroup.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,7 +2,7 @@
 
 newmtl White
 Kd 1.000000 1.000000 1.000000
-map_Kd brmarble.jpg
+map_Kd brmarble.png
 
 newmtl White_0
 Kd 1.000000 1.000000 1.000000

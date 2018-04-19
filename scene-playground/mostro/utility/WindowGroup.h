@@ -1,13 +1,12 @@
 #pragma once
 #include "Group.h"
 #include "CameraGroup.h"
-#include "ShaderGroup.h"
-#include "TextureGroup.h"
-#include "ModelGroup.h"
+#include "..\modeling\Shader.h"
+#include "..\utility\ModelGroup.h"
 
 namespace mostro
 {
-	namespace simulation
+	namespace utility
 	{
 		class WindowGroup : public Group
 		{
@@ -60,7 +59,10 @@ namespace mostro
 				glfwSetCursorPos(window, 1024 / 2, 768 / 2);
 
 				// Dark blue background
-				glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+				glClearColor(0.0f, 0.0f, 0.f, 0.0f);
+
+				// Define the viewport dimensions
+				glViewport(0, 0, 1024, 768);
 
 				// Enable depth test
 				glEnable(GL_DEPTH_TEST);
@@ -69,8 +71,15 @@ namespace mostro
 
 				// Cull triangles which normal is not towards the camera
 				glEnable(GL_CULL_FACE);
+
+				modeling::Shader *shader = new modeling::Shader("TransformVertexShader.vertexshader", "TextureFragmentShader.fragmentshader");
+				ourModel = new ModelGroup("face.obj", shader);
 			}
-			virtual ~WindowGroup() {}
+			virtual ~WindowGroup()
+			{
+				delete ourModel;
+				glfwTerminate();
+			}
 
 			void exit()
 			{
@@ -89,50 +98,63 @@ namespace mostro
 				renderList.push_back(this->cameraGroup);
 			}
 
-			void setModelGroup(ModelGroup *modelGroup)
-			{
-				// Get a handle for our "MVP" uniform,一定要在programID得到后才产生
-				MatrixID = glGetUniformLocation(modelGroup->getShaderGroup()->programID, "MVP");
+			//void addModelGroup(ModelGroup *modelGroup)
+			//{
+			//	renderList.push_back(std::shared_ptr<Group>(modelGroup));
+			//}
 
-				renderList.push_back(std::shared_ptr<Group>(modelGroup));
-			}
+			ModelGroup *ourModel;
 
 			std::shared_ptr<CameraGroup> getCameraGroup()
 			{
 				return cameraGroup;
 			}
 
-			std::shared_ptr<TextureGroup> getTextureGroup()
-			{
-				return textureGroup;
-			}
-
 			// 主窗体渲染
 			void render() override
 			{
 				do {
-					// Clear the screen
+					glfwPollEvents();
+
+					// Clear the colorbuffer
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 					cameraProcess();
-					for (auto &i : renderList)
-					{
-						i->render();
-					}
 
-					glm::mat4 ProjectionMatrix = getCameraGroup()->getProjectionMatrix();
-					glm::mat4 ViewMatrix = getCameraGroup()->getViewMatrix();
-					glm::mat4 ModelMatrix = glm::mat4(1.0);
-					glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					ourModel->render();
 
-					// Send our transformation to the currently bound shader, 
-					// in the "MVP" uniform
-					glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+					glm::mat4 projection = cameraGroup->getProjectionMatrix();
+					glm::mat4 view = cameraGroup->getViewMatrix();
+					glUniformMatrix4fv(
+						glGetUniformLocation(ourModel->shader->programID, "projection"),
+						1,
+						GL_FALSE,
+						glm::value_ptr(projection)
+					);
 
-					// Swap buffers
+					glUniformMatrix4fv(
+						glGetUniformLocation(ourModel->shader->programID, "view"),
+						1,
+						GL_FALSE,
+						glm::value_ptr(view)
+					);
+
+					cameraGroup->render();
+
+					// Draw the loaded model
+					glm::mat4 model;
+					model = glm::translate(model, glm::vec3(0.0f, 0.0, 0.0f)); // Translate it down a bit so it's at the center of the scene
+					model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// It's a bit too big for our scene, so scale it down
+					glUniformMatrix4fv(
+						glGetUniformLocation(ourModel->shader->programID, "model"),
+						1,
+						GL_FALSE,
+						glm::value_ptr(model)
+					);
+
+
+					// Swap the buffers
 					glfwSwapBuffers(window);
-					glfwPollEvents();
-
 				} // Check if the ESC key was pressed or the window was closed
 				while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
 					glfwWindowShouldClose(window) == 0);
@@ -142,12 +164,15 @@ namespace mostro
 		private:
 			// 相机对象
 			std::shared_ptr<CameraGroup> cameraGroup;
-			// 纹理对象
-			std::shared_ptr<TextureGroup> textureGroup;
 			// 渲染列表
 			std::vector<std::shared_ptr<Group>> renderList;
 
 			GLuint MatrixID;
+
+			void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+			{
+				//cameraGroup.ProcessMouseScroll(yoffset);
+			}
 
 			void cameraProcess()
 			{

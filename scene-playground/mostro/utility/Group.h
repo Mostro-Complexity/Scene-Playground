@@ -1,5 +1,4 @@
-﻿#pragma once
-#include "stdafx.h"
+#pragma once
 // Include standard headers
 #include <cstdio>
 #include <cstdlib>
@@ -22,10 +21,15 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
+#include <soil.h>
 
 namespace mostro
 {
-	namespace simulation
+	namespace utility
 	{
 		enum CameraGroupType
 		{

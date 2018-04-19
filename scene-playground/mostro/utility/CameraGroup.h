@@ -3,7 +3,7 @@
 
 namespace mostro
 {
-	namespace simulation
+	namespace utility
 	{
 		class CameraGroup : public Group
 		{
@@ -66,7 +66,7 @@ namespace mostro
 			}
 		private:
 			// Initial position : on +Z
-			glm::vec3 position = glm::vec3(0, 0, 5);
+			glm::vec3 position = glm::vec3(0, 0, 10);
 			// Initial horizontal angle : toward -Z
 			float horizontalAngle = 3.14f;
 			// Initial vertical angle : none
