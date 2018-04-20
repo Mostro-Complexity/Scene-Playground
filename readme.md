@@ -20,6 +20,11 @@
 ![](e-r.png)
 
 ## 最近一次更新（黑体为要修改的地方）：
+- 2018-4-20:
+  - 使用Assimp导入3D模型。
+  - ModelGroup中使用一个Shader和多个Mesh、Texture。
+  - 部分地方微调。
+
 - 2018-4-15：
   - 实现ModelGroup类。
   - 将着色器属性移入ModelGroup类。

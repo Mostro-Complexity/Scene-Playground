@@ -72,12 +72,14 @@ namespace mostro
 				// Cull triangles which normal is not towards the camera
 				glEnable(GL_CULL_FACE);
 
-				modeling::Shader *shader = new modeling::Shader("TransformVertexShader.vertexshader", "TextureFragmentShader.fragmentshader");
-				ourModel = new ModelGroup("face.obj", shader);
+				//glEnable(GL_BLEND);//开启混合
+				//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//设置混合因子
+				//glEnable(GL_POINT_SMOOTH);//开启点平滑
+				//glEnable(GL_NICEST);//设置质量优先
 			}
 			virtual ~WindowGroup()
 			{
-				delete ourModel;
+				//delete ourModel;
 				glfwTerminate();
 			}
 
@@ -87,9 +89,15 @@ namespace mostro
 				glfwTerminate();
 			}
 
-			void setGroup(Group *group)
+			void addGroup(Group *group)
 			{
-				renderList.push_back(std::shared_ptr<Group>(group));
+				std::shared_ptr<Group> arrivalGroup(group);
+				if (std::shared_ptr<CameraGroup> camera =
+					std::dynamic_pointer_cast<CameraGroup>(arrivalGroup))
+				{
+					cameraGroup = camera;
+				}
+				renderList.push_back(arrivalGroup);
 			}
 
 			void setCameraGroup(CameraGroup *cameraGroup)
@@ -98,12 +106,10 @@ namespace mostro
 				renderList.push_back(this->cameraGroup);
 			}
 
-			//void addModelGroup(ModelGroup *modelGroup)
-			//{
-			//	renderList.push_back(std::shared_ptr<Group>(modelGroup));
-			//}
-
-			ModelGroup *ourModel;
+			void addModelGroup(ModelGroup *modelGroup)
+			{
+				renderList.push_back(std::shared_ptr<Group>(modelGroup));
+			}
 
 			std::shared_ptr<CameraGroup> getCameraGroup()
 			{
@@ -121,37 +127,41 @@ namespace mostro
 
 					cameraProcess();
 
-					ourModel->render();
+					for (size_t i = 0; i < renderList.size(); i++)
+					{
+						if (std::shared_ptr<ModelGroup> mod =
+							std::dynamic_pointer_cast<ModelGroup>(renderList[i]))
+						{
+							glm::mat4 projection = cameraGroup->getProjectionMatrix();
+							glm::mat4 view = cameraGroup->getViewMatrix();
+							glUniformMatrix4fv(
+								glGetUniformLocation(mod->shader->programID, "projection"),
+								1,
+								GL_FALSE,
+								glm::value_ptr(projection)
+							);
 
-					glm::mat4 projection = cameraGroup->getProjectionMatrix();
-					glm::mat4 view = cameraGroup->getViewMatrix();
-					glUniformMatrix4fv(
-						glGetUniformLocation(ourModel->shader->programID, "projection"),
-						1,
-						GL_FALSE,
-						glm::value_ptr(projection)
-					);
+							glUniformMatrix4fv(
+								glGetUniformLocation(mod->shader->programID, "view"),
+								1,
+								GL_FALSE,
+								glm::value_ptr(view)
+							);
 
-					glUniformMatrix4fv(
-						glGetUniformLocation(ourModel->shader->programID, "view"),
-						1,
-						GL_FALSE,
-						glm::value_ptr(view)
-					);
-
-					cameraGroup->render();
-
-					// Draw the loaded model
-					glm::mat4 model;
-					model = glm::translate(model, glm::vec3(0.0f, 0.0, 0.0f)); // Translate it down a bit so it's at the center of the scene
-					model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// It's a bit too big for our scene, so scale it down
-					glUniformMatrix4fv(
-						glGetUniformLocation(ourModel->shader->programID, "model"),
-						1,
-						GL_FALSE,
-						glm::value_ptr(model)
-					);
-
+							// Draw the loaded model
+							glm::mat4 model;
+							model = glm::translate(model, glm::vec3(0.0f, 0.0, 0.0f)); // Translate it down a bit so it's at the center of the scene
+							model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// It's a bit too big for our scene, so scale it down
+							model = glm::rotate(model, 3.14f / 2, glm::vec3(-1.0, 0., 0.));
+							glUniformMatrix4fv(
+								glGetUniformLocation(mod->shader->programID, "model"),
+								1,
+								GL_FALSE,
+								glm::value_ptr(model)
+							);
+						}
+						renderList[i]->render();
+					}
 
 					// Swap the buffers
 					glfwSwapBuffers(window);

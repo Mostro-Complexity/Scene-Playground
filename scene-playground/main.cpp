@@ -18,10 +18,10 @@ int main()
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	//Shader *shader = new Shader("TransformVertexShader.vertexshader", "TextureFragmentShader.fragmentshader");
-	//ModelGroup *ourModel = new ModelGroup("face.obj", shader);
-	//windowGroup.addModelGroup(ourModel);
-	windowGroup.setCameraGroup(new CameraGroup(mostro::utility::CameraGroupType::observeCamera));
+	Shader *shader = new Shader("TransformVertexShader.vertexshader", "TextureFragmentShader.fragmentshader");
+	ModelGroup *ourModel = new ModelGroup("spookytree.obj", shader);
+	windowGroup.addModelGroup(ourModel);
+	windowGroup.setCameraGroup(new CameraGroup());
 
 	// Game loop
 	windowGroup.render();
