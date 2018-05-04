@@ -66,7 +66,9 @@ namespace mostro
 				i++;
 			}
 
-			gen = math::RungeKuttaGenerator<float>(entrance, 0.0, 1.0, math::gravity<float>);
+			gen = math::RungeKuttaGenerator<float>(
+				entrance, 0.0, 1.0, math::gravity<float>,
+				std::vector<xt::xarray<float>>{ quality });
 		}
 
 		void render() override

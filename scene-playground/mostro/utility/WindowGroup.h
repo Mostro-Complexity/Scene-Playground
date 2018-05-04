@@ -80,7 +80,7 @@ namespace mostro
 			virtual ~WindowGroup()
 			{
 				//delete ourModel;
-				glfwTerminate();
+				//glfwTerminate();
 			}
 
 			void exit()
@@ -147,14 +147,6 @@ namespace mostro
 								GL_FALSE,
 								glm::value_ptr(view)
 							);
-
-							//mod->render([](glm::mat4 &m)
-							//{
-							//	static int i = 0;
-							//	i++;
-							//	m = glm::translate(m, glm::vec3(0.0f + 0.1*i, 0.0 + 0.1*i, 0.0f + 0.1*i));
-							//	// Translate it down a bit so it's at the center of the scene
-							//});
 						}
 						renderList[i]->render();
 					}

@@ -7,11 +7,13 @@ namespace mostro
 {
 	namespace math
 	{
-		template<typename T, typename... Rest> inline
-			xt::xarray<T> gravity(T t, const xt::xarray<T> &r, const Rest&... args)
+		template<typename T> inline
+			xt::xarray<T> gravity(T t, const xt::xarray<T> &r,
+				const std::vector<xt::xarray<T>> &args)
 		{
 			T G = 6.67e-11f;
-			T m[] = { 5.965e11,5.965e11,5.965e11 };
+			xt::xarray<T> m = args[0];
+
 			xt::xarray<T> dy = xt::zeros<T>({ r.size() });
 
 			for (size_t i = 0; i < r.size(); i += 6)
@@ -34,9 +36,9 @@ namespace mostro
 			return dy;
 		}
 
-		template<typename T, typename S, typename... Rest> inline
-			xt::xarray<T> rungeKuttaGenerator(const xt::xarray<T> &y0, S x0, S h, const Rest&... args,
-				xt::xarray<T> func(T, const xt::xarray<T>&, const Rest&...))
+		template<typename T, typename S> inline
+			xt::xarray<T> rungeKuttaGenerator(const xt::xarray<T> &y0, S x0, S h,
+				xt::xarray<T> func(T, const xt::xarray<T>&, const std::vector<xt::xarray<T>>&))
 		{
 			static xt::xarray<T> x = x0; // TODO: static 多个对象使用？
 			static xt::xarray<T> y = y0;
@@ -56,7 +58,8 @@ namespace mostro
 			RungeKuttaGenerator() {}
 
 			RungeKuttaGenerator(const xt::xarray<T> &y0, T x0, T h,
-				std::function<xt::xarray<T>(T, const xt::xarray<T>&)> func)
+				std::function<xt::xarray<T>(T, const xt::xarray<T>&, const std::vector<xt::xarray<T>>&)> func,
+				const std::vector<xt::xarray<T>> &args = std::vector<xt::xarray<T>>())
 			{
 				this->x0 = x0;
 				this->y0 = y0;
@@ -64,14 +67,15 @@ namespace mostro
 				this->y = y0;
 				this->func = func;
 				this->h = h;
+				this->args = args;
 			}
 
 			xt::xarray<T> next()
 			{
-				xt::xarray<T> k1 = func(x0, y);
-				xt::xarray<T> k2 = func(x0 + h / 2, y + h * k1 / 2);
-				xt::xarray<T> k3 = func(x0 + h / 2, y + h * k2 / 2);
-				xt::xarray<T> k4 = func(x0 + h, y + h * k3);
+				xt::xarray<T> k1 = func(x0, y, this->args);
+				xt::xarray<T> k2 = func(x0 + h / 2, y + h * k1 / 2, this->args);
+				xt::xarray<T> k3 = func(x0 + h / 2, y + h * k2 / 2, this->args);
+				xt::xarray<T> k4 = func(x0 + h, y + h * k3, this->args);
 				y += h * (k1 + 2 * k2 + 2 * k3 + k4) / 6;
 				x += h;
 				return y;
@@ -82,10 +86,12 @@ namespace mostro
 			T x0;
 			T x;
 			T h;
-			std::function<xt::xarray<T>(T, const xt::xarray<T>&)> func;
+			std::function<xt::xarray<T>(T, const xt::xarray<T>&, const std::vector<xt::xarray<T>>&)> func;
+			std::vector<xt::xarray<T>> args;
 		};
 	}
 }
+
 //int main()
 //{
 //	xt::xarray<double> a
