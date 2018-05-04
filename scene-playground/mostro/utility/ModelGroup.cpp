@@ -6,6 +6,17 @@
 using namespace mostro::utility;
 using namespace mostro::modeling;
 
+mostro::utility::ModelGroup::ModelGroup(const GLchar * path, std::shared_ptr<modeling::Shader> shader)
+	: shader(shader)
+{
+	this->loadModel(path);
+
+	// Draw the loaded model
+	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+	// It's a bit too big for our scene, so scale it down
+	model = glm::rotate(model, 3.14f / 2, glm::vec3(-1.0, 0., 0.));
+}
+
 ModelGroup::ModelGroup()
 {
 	modeling::Shader *ptr = new modeling::Shader("TransformVertexShader.vertexshader",
@@ -14,17 +25,6 @@ ModelGroup::ModelGroup()
 
 	// Draw the loaded model
 	model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-	// It's a bit too big for our scene, so scale it down
-	model = glm::rotate(model, 3.14f / 2, glm::vec3(-1.0, 0., 0.));
-}
-
-mostro::utility::ModelGroup::ModelGroup(const GLchar * path, modeling::Shader * shader)
-	: shader(std::shared_ptr<modeling::Shader>(shader))
-{
-	this->loadModel(path);
-
-	// Draw the loaded model
-	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
 	// It's a bit too big for our scene, so scale it down
 	model = glm::rotate(model, 3.14f / 2, glm::vec3(-1.0, 0., 0.));
 }

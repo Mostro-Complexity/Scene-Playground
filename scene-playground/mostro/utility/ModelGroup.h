@@ -11,7 +11,7 @@ namespace mostro
 		class ModelGroup : public Group
 		{
 		public:
-			ModelGroup(const GLchar* path, modeling::Shader *shader);
+			ModelGroup(const GLchar* path, std::shared_ptr<modeling::Shader> shader);
 
 			ModelGroup();
 

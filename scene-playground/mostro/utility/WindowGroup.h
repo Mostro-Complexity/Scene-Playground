@@ -79,36 +79,28 @@ namespace mostro
 			}
 			virtual ~WindowGroup()
 			{
-				//delete ourModel;
-				//glfwTerminate();
-			}
-
-			void exit()
-			{
-				// Close OpenGL window and terminate GLFW
 				glfwTerminate();
 			}
 
-			void addGroup(Group *group)
+			void addGroup(std::shared_ptr<Group> group)
 			{
-				std::shared_ptr<Group> arrivalGroup(group);
 				if (std::shared_ptr<CameraGroup> camera =
-					std::dynamic_pointer_cast<CameraGroup>(arrivalGroup))
+					std::dynamic_pointer_cast<CameraGroup>(group))
 				{
 					cameraGroup = camera;
 				}
-				renderList.push_back(arrivalGroup);
+				renderList.push_back(group);
 			}
 
-			void setCameraGroup(CameraGroup *cameraGroup)
+			void setCameraGroup(std::shared_ptr<CameraGroup> cameraGroup)
 			{
-				this->cameraGroup = std::shared_ptr<CameraGroup>(cameraGroup);
+				this->cameraGroup = cameraGroup;
 				renderList.push_back(this->cameraGroup);
 			}
 
-			void addModelGroup(ModelGroup *modelGroup)
+			void addModelGroup(std::shared_ptr<ModelGroup> modelGroup)
 			{
-				renderList.push_back(std::shared_ptr<Group>(modelGroup));
+				renderList.push_back(modelGroup);
 			}
 
 			std::shared_ptr<CameraGroup> getCameraGroup()

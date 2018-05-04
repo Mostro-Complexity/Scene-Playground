@@ -7,18 +7,18 @@ namespace mostro
 {
 	struct Planet
 	{
-		Planet(utility::ModelGroup *model, float quality,
+		Planet(std::shared_ptr<utility::ModelGroup> model, float quality,
 			const glm::vec3 &location, const glm::vec3 &velocity)
 		{
 			this->velocity = velocity;
 			this->location = location;
 			this->quality = quality;
-			modelGroup = std::shared_ptr<utility::ModelGroup>(model);
+			modelGroup = model;
 		}
 
-		void setModel(utility::ModelGroup *model)
+		void setModel(std::shared_ptr<utility::ModelGroup> model)
 		{
-			modelGroup = std::shared_ptr<utility::ModelGroup>(model);
+			modelGroup = model;
 		}
 
 		void setLocation(float x, float y, float z)

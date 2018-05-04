@@ -17,13 +17,16 @@ using namespace std;
 
 int main()
 {
-	shared_ptr<WindowGroup> window(new WindowGroup(1024, 768, "title"));
+	shared_ptr<WindowGroup> window(new WindowGroup(1024, 768, "Planet movement"));
 
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	Shader *shader = new Shader("TransformVertexShader.vertexshader", "TextureFragmentShader.fragmentshader");
-	ModelGroup *ourModel = new ModelGroup("face.obj", shader);
+	shared_ptr<Shader> shader(new Shader(
+		"TransformVertexShader.vertexshader",
+		"TextureFragmentShader.fragmentshader"));
+
+	shared_ptr<ModelGroup> ourModel(new ModelGroup("face.obj", shader));
 
 	vector<shared_ptr<Planet>> p = {
 		shared_ptr<Planet>(new Planet(ourModel, 5.965e11f, glm::vec3(9e2f, 9e2f, 9e2f), glm::vec3(0, 0, 0))),
@@ -38,9 +41,8 @@ int main()
 	};
 
 
-	Universe *uni = new Universe(p);
-	window->addModelGroup(uni);
-	window->setCameraGroup(new CameraGroup());
+	window->addModelGroup(shared_ptr<Universe>(new Universe(p)));
+	window->setCameraGroup(shared_ptr<CameraGroup>(new CameraGroup()));
 
 	// Game loop
 	window->render();
