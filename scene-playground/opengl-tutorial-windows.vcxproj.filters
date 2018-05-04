@@ -39,6 +39,12 @@
     <ClInclude Include="mostro\utility\ModelGroup.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="mostro\Universe.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mostro\math\Math.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">

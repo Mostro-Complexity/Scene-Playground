@@ -6,20 +6,90 @@
 using namespace mostro::utility;
 using namespace mostro::modeling;
 
+ModelGroup::ModelGroup()
+{
+	modeling::Shader *ptr = new modeling::Shader("TransformVertexShader.vertexshader",
+		"TextureFragmentShader.fragmentshader");
+	shader = std::shared_ptr<modeling::Shader>(ptr);
+
+	// Draw the loaded model
+	model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+	// It's a bit too big for our scene, so scale it down
+	model = glm::rotate(model, 3.14f / 2, glm::vec3(-1.0, 0., 0.));
+}
+
+mostro::utility::ModelGroup::ModelGroup(const GLchar * path, modeling::Shader * shader)
+	: shader(std::shared_ptr<modeling::Shader>(shader))
+{
+	this->loadModel(path);
+
+	// Draw the loaded model
+	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+	// It's a bit too big for our scene, so scale it down
+	model = glm::rotate(model, 3.14f / 2, glm::vec3(-1.0, 0., 0.));
+}
+
 void ModelGroup::render()
 {
 	shader->use();
+
+	glUniformMatrix4fv(
+		glGetUniformLocation(shader->programID, "model"),
+		1,
+		GL_FALSE,
+		glm::value_ptr(model)
+	);
+
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 	{
 		this->meshes[i].render(shader);
 	}
 }
 
+void mostro::utility::ModelGroup::render(
+	const std::function<glm::mat4(const glm::mat4&)>& transform)
+{
+	shader->use();
+
+	glUniformMatrix4fv(
+		glGetUniformLocation(shader->programID, "model"),
+		1,
+		GL_FALSE,
+		glm::value_ptr(transform(model))
+	);
+
+	for (GLuint i = 0; i < this->meshes.size(); i++)
+	{
+		this->meshes[i].render(shader);
+	}
+}
+
+void mostro::utility::ModelGroup::render(glm::mat4 transform(const glm::mat4&))
+{
+	shader->use();
+
+	glUniformMatrix4fv(
+		glGetUniformLocation(shader->programID, "model"),
+		1,
+		GL_FALSE,
+		glm::value_ptr(transform(model))
+	);
+
+	for (GLuint i = 0; i < this->meshes.size(); i++)
+	{
+		this->meshes[i].render(shader);
+	}
+}
+
+
 void ModelGroup::loadModel(const std::string &path)
 {
 	Assimp::Importer import;
-	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate |
-		aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
+
+	const aiScene* scene = import.ReadFile(
+		path,
+		aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices
+	);
 
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{

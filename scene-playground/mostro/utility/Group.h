@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <sstream>
 #include <string.h>
+#include <functional>
 #include <memory>
 #include <unordered_map>
 // Include GLEW

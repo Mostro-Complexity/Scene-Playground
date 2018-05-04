@@ -148,17 +148,13 @@ namespace mostro
 								glm::value_ptr(view)
 							);
 
-							// Draw the loaded model
-							glm::mat4 model;
-							model = glm::translate(model, glm::vec3(0.0f, 0.0, 0.0f)); // Translate it down a bit so it's at the center of the scene
-							model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// It's a bit too big for our scene, so scale it down
-							model = glm::rotate(model, 3.14f / 2, glm::vec3(-1.0, 0., 0.));
-							glUniformMatrix4fv(
-								glGetUniformLocation(mod->shader->programID, "model"),
-								1,
-								GL_FALSE,
-								glm::value_ptr(model)
-							);
+							//mod->render([](glm::mat4 &m)
+							//{
+							//	static int i = 0;
+							//	i++;
+							//	m = glm::translate(m, glm::vec3(0.0f + 0.1*i, 0.0 + 0.1*i, 0.0f + 0.1*i));
+							//	// Translate it down a bit so it's at the center of the scene
+							//});
 						}
 						renderList[i]->render();
 					}
