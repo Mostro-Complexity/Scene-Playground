@@ -22,9 +22,9 @@ int main()
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	shared_ptr<Shader> shader(new Shader(
-		"TransformVertexShader.vertexshader",
-		"TextureFragmentShader.fragmentshader"));
+	shared_ptr<Shader> shader(
+		ShaderGenerator::ptrFromFile("TransformVertexShader.vertexshader",
+			"TextureFragmentShader.fragmentshader"));
 
 	shared_ptr<ModelGroup> ourModel(new ModelGroup("face.obj", shader));
 
@@ -40,8 +40,14 @@ int main()
 		shared_ptr<Planet>(new Planet(ourModel, 5.965e11f, glm::vec3(6e2f, 3e2f, 6e2f), glm::vec3(0, 0, 0)))
 	};
 
+	shared_ptr<Universe> universe(new Universe(p));
+	window->addModelGroup(universe);
 
-	window->addModelGroup(shared_ptr<Universe>(new Universe(p)));
+	const auto &tracks = universe->getTracks();
+	for (size_t i = 0; i < tracks.size(); i++)
+	{
+		window->addModelGroup(tracks[i]);
+	}
 	window->setCameraGroup(shared_ptr<CameraGroup>(new CameraGroup()));
 
 	// Game loop

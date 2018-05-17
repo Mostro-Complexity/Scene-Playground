@@ -2,6 +2,7 @@
 #include "utility\Group.h"
 #include "utility\ModelGroup.h"
 #include "math\Math.h"
+#include "utility\TrackGroup.h"
 
 namespace mostro
 {
@@ -39,6 +40,7 @@ namespace mostro
 		glm::vec3 location; // 位置
 		glm::vec3 velocity; // 速度
 		float quality; // 质量
+
 	};
 
 
@@ -69,6 +71,10 @@ namespace mostro
 			gen = math::RungeKuttaGenerator<float>(
 				entrance, 0.0, 1.0, math::gravity<float>,
 				std::vector<xt::xarray<float>>{ quality });
+
+			tracks = std::vector<std::shared_ptr<utility::TrackGroup>>(
+				planets.size(),
+				std::shared_ptr<utility::TrackGroup>(new utility::TrackGroup));
 		}
 
 		void render() override
@@ -86,10 +92,22 @@ namespace mostro
 						planets[i]->location.z));
 					return r;
 				});
+
+				tracks[i]->addVertex(planets[i]->location.x,
+					planets[i]->location.y,
+					planets[i]->location.z);
+
+				tracks[i]->render();
 			}
+		}
+
+		const std::vector<std::shared_ptr<utility::TrackGroup>> &getTracks()
+		{
+			return tracks;
 		}
 	private:
 		std::vector<std::shared_ptr<Planet>> planets;
+		std::vector<std::shared_ptr<utility::TrackGroup>> tracks;
 		math::RungeKuttaGenerator<float> gen;
 
 		void getElementData(const xt::xarray<float> &arr, size_t &i)
