@@ -40,7 +40,7 @@ int main()
 		shared_ptr<Planet>(new Planet(ourModel, 5.965e11f, glm::vec3(6e2f, 3e2f, 6e2f), glm::vec3(0, 0, 0)))
 	};
 
-	shared_ptr<Universe> universe(new Universe(p));
+	shared_ptr<Universe> universe(new Universe(p, shader));
 	window->addModelGroup(universe);
 
 	const auto &tracks = universe->getTracks();

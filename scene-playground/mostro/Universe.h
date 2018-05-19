@@ -47,7 +47,7 @@ namespace mostro
 	class Universe : public utility::ModelGroup
 	{
 	public:
-		Universe(const std::vector<std::shared_ptr<Planet>> &planets)
+		Universe(const std::vector<std::shared_ptr<Planet>> &planets, std::shared_ptr<modeling::Shader> &shader)
 			: planets(planets), utility::ModelGroup()
 		{
 			xt::xarray<float> entrance = xt::zeros<float>({ (int)planets.size() * 6 });
@@ -74,7 +74,7 @@ namespace mostro
 
 			tracks = std::vector<std::shared_ptr<utility::TrackGroup>>(
 				planets.size(),
-				std::shared_ptr<utility::TrackGroup>(new utility::TrackGroup));
+				std::shared_ptr<utility::TrackGroup>(new utility::TrackGroup(shader)));
 		}
 
 		void render() override

@@ -10,7 +10,7 @@ namespace mostro
 		class TrackGroup : public ModelGroup
 		{
 		public:
-			TrackGroup();
+			TrackGroup(std::shared_ptr<modeling::Shader> shader);
 
 			virtual ~TrackGroup();
 
@@ -21,8 +21,8 @@ namespace mostro
 			glm::mat4 model;
 
 			std::vector<GLfloat> trackList;
-			GLuint VertexArrayID;
-			GLuint vertexbuffer;
+			GLuint vertexArray;
+			GLuint vertexBuffer;
 		};
 	}
 }

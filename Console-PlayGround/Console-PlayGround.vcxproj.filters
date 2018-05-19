@@ -15,18 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="console-playground.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Console-PlayGround.cpp">
+    <ClCompile Include="DrawCurves.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
