@@ -33,14 +33,17 @@ namespace mostro
 			void processNode(aiNode* node, const aiScene* scene);
 			modeling::Mesh processMesh(aiMesh* mesh, const aiScene* scene);
 
-			glm::mat4 model;
-
 			std::vector<modeling::Texture> loadMaterialTextures(
 				aiMaterial* mat,
 				aiTextureType type,
 				std::string typeName);
 
 			GLint TextureFromFile(const char* path);
+
+			//virtual ~ModelGroup();
+
+		protected:
+			glm::mat4 model;
 
 		};
 	}

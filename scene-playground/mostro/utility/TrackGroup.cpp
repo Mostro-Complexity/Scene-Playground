@@ -6,12 +6,6 @@ using namespace mostro::modeling;
 
 TrackGroup::TrackGroup(shared_ptr<Shader> shader) : utility::ModelGroup()
 {
-	glGenVertexArrays(1, &vertexArray);
-	glBindVertexArray(vertexArray);
-
-	glGenBuffers(1, &vertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-
 	const string vertexShaderCode =
 		"#version 330 core\n"
 		"layout(location = 0) in vec3 position;\n"
@@ -24,6 +18,7 @@ TrackGroup::TrackGroup(shared_ptr<Shader> shader) : utility::ModelGroup()
 		"void main(){color = vec4(1.0, 1.0, 1.0, 1.0);}\n\0";
 
 	this->shader = shared_ptr<Shader>(ShaderGenerator::ptrLinkFragmentFromString(*shader, fragmentShaderCode));
+
 }
 
 TrackGroup::~TrackGroup()
@@ -39,10 +34,14 @@ void TrackGroup::addVertex(float x, float y, float z)
 
 void TrackGroup::render()
 {
-
-	glBufferData(GL_ARRAY_BUFFER, trackList.size() * sizeof(GLfloat), &trackList[0], GL_STATIC_DRAW);
 	shader->use();
+	glGenVertexArrays(1, &vertexArray);
+	glBindVertexArray(vertexArray);
 
+	glGenBuffers(1, &vertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, trackList.size() * sizeof(GLfloat), &trackList[0], GL_STATIC_DRAW);
+	// TODO: Do not use vertor
 	glUniformMatrix4fv(
 		glGetUniformLocation(this->shader->programID, "model"),
 		1,
@@ -65,6 +64,6 @@ void TrackGroup::render()
 	glDrawArrays(GL_LINE_STRIP, 0, trackList.size() / 3); // 12*3 indices starting at 0 -> 12 triangles
 	glDisableVertexAttribArray(0);
 
-	// glDeleteBuffers(1, &vertexbuffer);
+	glDeleteBuffers(1, &vertexBuffer);
 }
 

@@ -43,11 +43,12 @@ int main()
 	shared_ptr<Universe> universe(new Universe(p, shader));
 	window->addModelGroup(universe);
 
-	const auto &tracks = universe->getTracks();
-	for (size_t i = 0; i < tracks.size(); i++)
+	for (size_t i = 0; i < universe->tracks.size(); i++)
 	{
-		window->addModelGroup(tracks[i]);
+		window->addModelGroup(universe->tracks[i]);
 	}
+	window->addModelGroup(shared_ptr<TrackGroup>(new TrackGroup(shader)));
+
 	window->setCameraGroup(shared_ptr<CameraGroup>(new CameraGroup()));
 
 	// Game loop

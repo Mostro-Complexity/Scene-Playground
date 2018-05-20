@@ -47,7 +47,7 @@ namespace mostro
 	class Universe : public utility::ModelGroup
 	{
 	public:
-		Universe(const std::vector<std::shared_ptr<Planet>> &planets, std::shared_ptr<modeling::Shader> &shader)
+		Universe(const std::vector<std::shared_ptr<Planet>> &planets, std::shared_ptr<modeling::Shader> tracksShader)
 			: planets(planets), utility::ModelGroup()
 		{
 			xt::xarray<float> entrance = xt::zeros<float>({ (int)planets.size() * 6 });
@@ -73,8 +73,12 @@ namespace mostro
 				std::vector<xt::xarray<float>>{ quality });
 
 			tracks = std::vector<std::shared_ptr<utility::TrackGroup>>(
-				planets.size(),
-				std::shared_ptr<utility::TrackGroup>(new utility::TrackGroup(shader)));
+				planets.size());
+
+			for (size_t i = 0; i < tracks.size(); i++)
+			{
+				tracks[i] = std::shared_ptr<utility::TrackGroup>(new utility::TrackGroup(tracksShader));
+			}
 		}
 
 		void render() override
@@ -97,17 +101,14 @@ namespace mostro
 					planets[i]->location.y,
 					planets[i]->location.z);
 
-				tracks[i]->render();
+				//tracks[i]->render();
 			}
 		}
 
-		const std::vector<std::shared_ptr<utility::TrackGroup>> &getTracks()
-		{
-			return tracks;
-		}
+		std::vector<std::shared_ptr<utility::TrackGroup>> tracks;
+
 	private:
 		std::vector<std::shared_ptr<Planet>> planets;
-		std::vector<std::shared_ptr<utility::TrackGroup>> tracks;
 		math::RungeKuttaGenerator<float> gen;
 
 		void getElementData(const xt::xarray<float> &arr, size_t &i)

@@ -21,6 +21,13 @@ namespace mostro
 			GLuint programID;
 			GLuint vertexShaderID;
 			GLuint fragmentShaderID;
+
+			virtual ~Shader()
+			{
+				glDeleteProgram(programID);
+				glDeleteShader(vertexShaderID);
+				glDeleteShader(fragmentShaderID);
+			}
 		};
 
 		class ShaderGenerator

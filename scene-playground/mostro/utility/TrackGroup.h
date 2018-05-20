@@ -18,7 +18,6 @@ namespace mostro
 
 			void render() override;
 		private:
-			glm::mat4 model;
 
 			std::vector<GLfloat> trackList;
 			GLuint vertexArray;

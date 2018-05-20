@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Group.h"
 #include "WindowGroup.h"
 #include "CameraGroup.h"
