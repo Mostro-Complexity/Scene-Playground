@@ -19,10 +19,16 @@ TrackGroup::TrackGroup(shared_ptr<Shader> shader) : utility::ModelGroup()
 
 	this->shader = shared_ptr<Shader>(ShaderGenerator::ptrLinkFragmentFromString(*shader, fragmentShaderCode));
 
+	glGenVertexArrays(1, &vertexArray);
+	glBindVertexArray(vertexArray);
+	glGenBuffers(1, &vertexBuffer);
+
 }
 
 TrackGroup::~TrackGroup()
 {
+	glDeleteBuffers(1, &vertexBuffer);
+	glDeleteVertexArrays(1, &vertexArray);
 }
 
 void TrackGroup::addVertex(float x, float y, float z)
@@ -30,18 +36,26 @@ void TrackGroup::addVertex(float x, float y, float z)
 	trackList.push_back(x);
 	trackList.push_back(y);
 	trackList.push_back(z);
+	if (trackList.size() > 500)
+	{
+		trackList.pop_front();
+		trackList.pop_front();
+		trackList.pop_front();
+	}
 }
 
 void TrackGroup::render()
 {
 	shader->use();
-	glGenVertexArrays(1, &vertexArray);
 	glBindVertexArray(vertexArray);
 
-	glGenBuffers(1, &vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, trackList.size() * sizeof(GLfloat), &trackList[0], GL_STATIC_DRAW);
-	// TODO: Do not use vertor
+
+	GLfloat *buf = new GLfloat[500];
+	std::copy(trackList.begin(), trackList.end(), buf);
+	glBufferData(GL_ARRAY_BUFFER, 500 * sizeof(GLfloat), buf, GL_STATIC_DRAW);
+	delete[500] buf;
+
 	glUniformMatrix4fv(
 		glGetUniformLocation(this->shader->programID, "model"),
 		1,
@@ -64,6 +78,5 @@ void TrackGroup::render()
 	glDrawArrays(GL_LINE_STRIP, 0, trackList.size() / 3); // 12*3 indices starting at 0 -> 12 triangles
 	glDisableVertexAttribArray(0);
 
-	glDeleteBuffers(1, &vertexBuffer);
 }
 

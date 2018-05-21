@@ -19,7 +19,7 @@ namespace mostro
 			void render() override;
 		private:
 
-			std::vector<GLfloat> trackList;
+			std::deque<GLfloat> trackList;
 			GLuint vertexArray;
 			GLuint vertexBuffer;
 		};
