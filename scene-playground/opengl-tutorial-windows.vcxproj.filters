@@ -62,7 +62,7 @@
     <ClCompile Include="mostro\utility\TrackGroup.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="mostro\utility\WIndowGroup.cpp">
+    <ClCompile Include="mostro\utility\WindowGroup.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
