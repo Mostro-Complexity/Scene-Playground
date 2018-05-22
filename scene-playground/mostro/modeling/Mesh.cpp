@@ -49,7 +49,7 @@ void Mesh::setupMesh()
 	glBindVertexArray(0);
 }
 
-void Mesh::render(std::shared_ptr<Shader> shader)
+void Mesh::render(const Shader &shader)
 {
 	GLuint diffuseNr = 1;
 	GLuint specularNr = 1;
@@ -66,7 +66,7 @@ void Mesh::render(std::shared_ptr<Shader> shader)
 			ss << specularNr++; // Transfer GLuint to stream
 		number = ss.str();
 
-		glUniform1f(glGetUniformLocation(shader->programID, ("material." + name + number).c_str()), i);
+		glUniform1f(glGetUniformLocation(shader.programID, ("material." + name + number).c_str()), i);
 		glBindTexture(GL_TEXTURE_2D, this->textures[i].id);	// przypisanie textury do texture unit
 	}
 	glActiveTexture(GL_TEXTURE0);

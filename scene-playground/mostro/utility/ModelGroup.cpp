@@ -42,7 +42,7 @@ void ModelGroup::render()
 
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 	{
-		this->meshes[i].render(shader);
+		this->meshes[i].render(*shader);
 	}
 }
 
@@ -60,7 +60,7 @@ void ModelGroup::render(
 
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 	{
-		this->meshes[i].render(shader);
+		this->meshes[i].render(*shader);
 	}
 }
 
@@ -77,10 +77,14 @@ void ModelGroup::render(glm::mat4 transform(const glm::mat4&))
 
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 	{
-		this->meshes[i].render(shader);
+		this->meshes[i].render(*shader);
 	}
 }
 
+glm::vec3 ModelGroup::getCentralVertex()
+{
+	return glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2);
+}
 
 void ModelGroup::loadModel(const std::string &path)
 {
@@ -132,6 +136,14 @@ Mesh ModelGroup::processMesh(aiMesh * mesh, const aiScene * scene)
 		vector.y = mesh->mVertices[i].y;
 		vector.z = mesh->mVertices[i].z;
 		vertex.Position = vector;
+
+		max_x = vector.x > max_x ? vector.x : max_x;
+		max_y = vector.y > max_y ? vector.y : max_y;
+		max_z = vector.z > max_z ? vector.z : max_z;
+
+		min_x = vector.x < min_x ? vector.x : min_x;
+		min_y = vector.y < min_y ? vector.y : min_y;
+		min_z = vector.z < min_z ? vector.z : min_z;
 
 		// normal
 		if (mesh->mNormals != nullptr)

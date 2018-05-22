@@ -23,6 +23,7 @@ namespace mostro
 
 			void render(glm::mat4 transform(const glm::mat4&));
 
+			glm::vec3 getCentralVertex();
 		private:
 			// Model Data
 			std::vector<modeling::Texture> textures_loaded;
@@ -39,6 +40,9 @@ namespace mostro
 				std::string typeName);
 
 			GLint TextureFromFile(const char* path);
+
+			float min_x = INFINITY, min_y = INFINITY, min_z = INFINITY,
+				max_x = -INFINITY, max_y = -INFINITY, max_z = -INFINITY;
 
 			//virtual ~ModelGroup();
 

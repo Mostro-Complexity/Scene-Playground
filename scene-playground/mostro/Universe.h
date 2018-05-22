@@ -97,9 +97,11 @@ namespace mostro
 					return r;
 				});
 
-				tracks[i]->addVertex(planets[i]->location.x,
-					planets[i]->location.y,
-					planets[i]->location.z);
+				glm::vec3 mid_v = planets[i]->modelGroup->getCentralVertex();
+				tracks[i]->addVertex(
+					planets[i]->location.x + mid_v.x,
+					planets[i]->location.y + mid_v.y,
+					planets[i]->location.z + mid_v.z);
 
 				//tracks[i]->render();
 			}

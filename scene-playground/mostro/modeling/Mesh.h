@@ -31,7 +31,7 @@ namespace mostro
 
 			/* Funtions */
 			Mesh(std::vector<Vertex> &vertices, std::vector<GLuint> &indices, std::vector<Texture> &textures);
-			void render(std::shared_ptr<Shader> shader) override;
+			void render(const Shader &shader) override;
 
 		private:
 			// Render Data
