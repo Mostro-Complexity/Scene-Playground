@@ -23,7 +23,7 @@ namespace mostro
 		public:
 			Batch() {}
 
-			virtual void render(std::shared_ptr<Shader> shader) abstract {}
+			virtual void render(std::shared_ptr<Shader> shader) abstract;
 		protected:
 			virtual ~Batch() {}
 

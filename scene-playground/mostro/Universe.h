@@ -2,6 +2,7 @@
 #include "utility\Group.h"
 #include "utility\ModelGroup.h"
 #include "math\Math.h"
+#include "utility\TrackGroup.h"
 
 namespace mostro
 {
@@ -39,13 +40,14 @@ namespace mostro
 		glm::vec3 location; // 位置
 		glm::vec3 velocity; // 速度
 		float quality; // 质量
+
 	};
 
 
 	class Universe : public utility::ModelGroup
 	{
 	public:
-		Universe(const std::vector<std::shared_ptr<Planet>> &planets)
+		Universe(const std::vector<std::shared_ptr<Planet>> &planets, std::shared_ptr<modeling::Shader> tracksShader)
 			: planets(planets), utility::ModelGroup()
 		{
 			xt::xarray<float> entrance = xt::zeros<float>({ (int)planets.size() * 6 });
@@ -69,6 +71,14 @@ namespace mostro
 			gen = math::RungeKuttaGenerator<float>(
 				entrance, 0.0, 1.0, math::gravity<float>,
 				std::vector<xt::xarray<float>>{ quality });
+
+			tracks = std::vector<std::shared_ptr<utility::TrackGroup>>(
+				planets.size());
+
+			for (size_t i = 0; i < tracks.size(); i++)
+			{
+				tracks[i] = std::shared_ptr<utility::TrackGroup>(new utility::TrackGroup(tracksShader));
+			}
 		}
 
 		void render() override
@@ -86,8 +96,17 @@ namespace mostro
 						planets[i]->location.z));
 					return r;
 				});
+
+				tracks[i]->addVertex(planets[i]->location.x,
+					planets[i]->location.y,
+					planets[i]->location.z);
+
+				//tracks[i]->render();
 			}
 		}
+
+		std::vector<std::shared_ptr<utility::TrackGroup>> tracks;
+
 	private:
 		std::vector<std::shared_ptr<Planet>> planets;
 		math::RungeKuttaGenerator<float> gen;

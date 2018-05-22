@@ -6,7 +6,7 @@
 using namespace mostro::utility;
 using namespace mostro::modeling;
 
-mostro::utility::ModelGroup::ModelGroup(const GLchar * path, std::shared_ptr<modeling::Shader> shader)
+ModelGroup::ModelGroup(const GLchar * path, std::shared_ptr<Shader> shader)
 	: shader(shader)
 {
 	this->loadModel(path);
@@ -19,12 +19,12 @@ mostro::utility::ModelGroup::ModelGroup(const GLchar * path, std::shared_ptr<mod
 
 ModelGroup::ModelGroup()
 {
-	modeling::Shader *ptr = new modeling::Shader("TransformVertexShader.vertexshader",
-		"TextureFragmentShader.fragmentshader");
-	shader = std::shared_ptr<modeling::Shader>(ptr);
+	shader = std::shared_ptr<modeling::Shader>(
+		ShaderGenerator::ptrFromFile("TransformVertexShader.vertexshader",
+			"TextureFragmentShader.fragmentshader"));
 
 	// Draw the loaded model
-	model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
 	// It's a bit too big for our scene, so scale it down
 	model = glm::rotate(model, 3.14f / 2, glm::vec3(-1.0, 0., 0.));
 }
@@ -46,7 +46,7 @@ void ModelGroup::render()
 	}
 }
 
-void mostro::utility::ModelGroup::render(
+void ModelGroup::render(
 	const std::function<glm::mat4(const glm::mat4&)>& transform)
 {
 	shader->use();
@@ -64,7 +64,7 @@ void mostro::utility::ModelGroup::render(
 	}
 }
 
-void mostro::utility::ModelGroup::render(glm::mat4 transform(const glm::mat4&))
+void ModelGroup::render(glm::mat4 transform(const glm::mat4&))
 {
 	shader->use();
 
@@ -227,3 +227,14 @@ GLint ModelGroup::TextureFromFile(const char* path)
 	SOIL_free_image_data(image);
 	return textureID;
 }
+
+//ModelGroup:: ~ModelGroup()
+//{
+//	for (size_t i = 0; i < meshes.size(); i++)
+//	{
+//		for (size_t j = 0; j < meshes[i].textures.size(); j++)
+//		{
+//			glDeleteTextures(1, &meshes[i].textures[j].id);
+//		}
+//	}
+//}
