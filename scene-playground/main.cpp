@@ -1,4 +1,4 @@
-// GL includes
+#include <random>
 #include "mostro\modeling\Shader.h"
 
 #include "mostro\utility\Group.h"
@@ -27,18 +27,14 @@ int main()
 			"TextureFragmentShader.fragmentshader"));
 
 	shared_ptr<ModelGroup> ourModel(new ModelGroup("face.obj", shader));
+	std::default_random_engine random(time(NULL));
+	std::uniform_real_distribution<double> posRange(-9e2f, 9e2f), messRange(5.965e10f, 5.965e11f);
 
-	vector<shared_ptr<Planet>> p = {
-		shared_ptr<Planet>(new Planet(ourModel, 5.965e11f, glm::vec3(9e2f, 9e2f, 9e2f), glm::vec3(0, 0, 0))),
-		shared_ptr<Planet>(new Planet(ourModel, 5.965e10f, glm::vec3(6e2f, 6e2f, 6e2f), glm::vec3(0, 0, 0))),
-		shared_ptr<Planet>(new Planet(ourModel, 5.965e11f, glm::vec3(3e2f, 3e2f, 3e2f), glm::vec3(0, 0, 0))),
-		shared_ptr<Planet>(new Planet(ourModel, 5.965e10f, glm::vec3(0.f, 3e2f, 0.f), glm::vec3(0, 0, 0))),
-		shared_ptr<Planet>(new Planet(ourModel, 5.965e11f, glm::vec3(3e2f, 6e2f, 3e2f), glm::vec3(0, 0, 0))),
-		shared_ptr<Planet>(new Planet(ourModel, 5.965e10f, glm::vec3(6e2f, 9e2f, 6e2f), glm::vec3(0, 0, 0))),
-		shared_ptr<Planet>(new Planet(ourModel, 5.965e11f, glm::vec3(0.f, 6e2f,0.f), glm::vec3(0, 0, 0))),
-		shared_ptr<Planet>(new Planet(ourModel, 5.965e10f, glm::vec3(3e2f, 0.f, 0.f), glm::vec3(0, 0, 0))),
-		shared_ptr<Planet>(new Planet(ourModel, 5.965e11f, glm::vec3(6e2f, 3e2f, 6e2f), glm::vec3(0, 0, 0)))
-	};
+	vector<shared_ptr<Planet>> p(20);
+	for (size_t i = 0; i < 20; i++)
+	{
+		p[i] = shared_ptr<Planet>(new Planet(ourModel, messRange(random), glm::vec3(posRange(random), posRange(random), posRange(random)), glm::vec3(0, 0, 0)));
+	}
 
 	shared_ptr<Universe> universe(new Universe(p, shader));
 	window->addModelGroup(universe);
