@@ -8,8 +8,8 @@ namespace mostro
 	namespace math
 	{
 		template<typename T> inline
-			xt::xarray<T> gravity(T t, const xt::xarray<T> &r,
-				const std::vector<xt::xarray<T>> &args)
+			xt::xarray<T> gravity(T t, const xt::xarray<T>& r,
+				const std::vector<xt::xarray<T>>& args)
 		{
 			T G = 6.67e-11f;
 			xt::xarray<T> m = args[0];
@@ -36,20 +36,20 @@ namespace mostro
 			return dy;
 		}
 
-		template<typename T, typename S> inline
-			xt::xarray<T> rungeKuttaGenerator(const xt::xarray<T> &y0, S x0, S h,
-				xt::xarray<T> func(T, const xt::xarray<T>&, const std::vector<xt::xarray<T>>&))
-		{
-			static xt::xarray<T> x = x0; // TODO: static 多个对象使用？
-			static xt::xarray<T> y = y0;
-			xt::xarray<T> k1 = func(x0, y, args);
-			xt::xarray<T> k2 = func(x0 + h / 2, y + h * k1 / 2, args);
-			xt::xarray<T> k3 = func(x0 + h / 2, y + h * k2 / 2, args);
-			xt::xarray<T> k4 = func(x0 + h, y + h * k3, args);
-			y = y + h * (k1 + 2 * k2 + 2 * k3 + k4) / 6;
-			x += h;
-			return y;
-		}
+		//template<typename T, typename S> inline
+		//	xt::xarray<T> rungeKuttaGenerator(const xt::xarray<T> &y0, S x0, S h,
+		//		xt::xarray<T> func(T, const xt::xarray<T>&, const std::vector<xt::xarray<T>>&))
+		//{
+		//	static xt::xarray<T> x = x0; // TODO: static 多个对象使用？
+		//	static xt::xarray<T> y = y0;
+		//	xt::xarray<T> k1 = func(x0, y, args);
+		//	xt::xarray<T> k2 = func(x0 + h / 2, y + h * k1 / 2, args);
+		//	xt::xarray<T> k3 = func(x0 + h / 2, y + h * k2 / 2, args);
+		//	xt::xarray<T> k4 = func(x0 + h, y + h * k3, args);
+		//	y = y + h * (k1 + 2 * k2 + 2 * k3 + k4) / 6;
+		//	x += h;
+		//	return y;
+		//}
 
 
 		template<typename T>
@@ -57,9 +57,9 @@ namespace mostro
 		{
 			RungeKuttaGenerator() {}
 
-			RungeKuttaGenerator(const xt::xarray<T> &y0, T x0, T h,
+			RungeKuttaGenerator(const xt::xarray<T>& y0, T x0, T h,
 				std::function<xt::xarray<T>(T, const xt::xarray<T>&, const std::vector<xt::xarray<T>>&)> func,
-				const std::vector<xt::xarray<T>> &args = std::vector<xt::xarray<T>>())
+				const std::vector<xt::xarray<T>>& args = std::vector<xt::xarray<T>>())
 			{
 				this->x0 = x0;
 				this->y0 = y0;

@@ -1,4 +1,12 @@
-# Scene-Playground（暂时就叫这个名字，有好想法欢迎联系我）
+<!--
+ * @Author: Mostro
+ * @Date: 2021-11-04 13:54:41
+ * @LastEditTime: 2021-11-04 14:09:49
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \Scene-Playground\readme.md
+-->
+# 天体演化模拟程序
 -------
 - 邮箱：616040809@qq.com  
 - 作者：Mostro（目前）
@@ -9,6 +17,9 @@
 
 目前该项目还在实现当中，欢迎每个人（熟悉的不熟悉的）能给我意见，更希望有志之士能与我共同完成此项目。
 
+![image](screen_shot.png)
+![image](screen_shot_1.png)
+
 ## 此项目已经完成：
 - 基本视角变化已经算法已经完成
 - 对OpenGL接口进行了简单封装
@@ -16,11 +27,11 @@
 
 ## 项目环境：
 - visual studio 2017(VC14)
+- visual studio 2019(VC15)
 - 基于C++14
 - OpenGL 3.3
 
 ## 项目目标：
-- 原则上希望实现一个高性能的物理引擎，并用图形学建模、可视化（*但其实也不一定是物理引擎啦，还希望用它模拟更复杂的东西*）。
 - 从科学计算的角度来看，实现星体的碰撞与破碎，星云的融合。
 - 从图形学的角度，实现光照、镜面反射、粒子特效等。
 
